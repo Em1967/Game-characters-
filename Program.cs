@@ -43,6 +43,9 @@ do
     Console.WriteLine("7) Display Street Fighter Characters");
     Console.WriteLine("8) Add Street Fighter Character");
     Console.WriteLine("9) Remove Street Fighter Character");
+    Console.WriteLine("10) Edit Mario Character"); 
+    Console.WriteLine("11) Edit Donkey Kong Character"); 
+    Console.WriteLine("12) Edit Street Fighter 2 Character");
     Console.WriteLine("Enter to quit");
 
   // input selection
@@ -171,6 +174,81 @@ do
             logger.Error("Invalid Id");
         }
     }
+    else if (choice == "10")  // Edit Mario Character
+{
+    Console.WriteLine("Enter the Id of the Mario character to edit:");
+    if (UInt32.TryParse(Console.ReadLine(), out UInt32 Id))
+    {
+        int index = marios.FindIndex(c => c.Id == Id);
+        if (index >= 0)
+        {
+            // Edit character
+            Mario mario = marios[index];
+            InputCharacter(mario); 
+            marios[index] = mario;  
+            File.WriteAllText("mario.json", JsonSerializer.Serialize(marios));
+            logger.Info($"Character Id {Id} edited: {mario.Name}");
+        }
+        else
+        {
+            logger.Error($"Character Id {Id} not found.");
+        }
+    }
+    else
+    {
+        logger.Error("Invalid Id.");
+    }
+}
+else if (choice == "11")  // Edit Donkey Kong Character
+{
+    Console.WriteLine("Enter the Id of the Donkey Kong character to edit:");
+    if (UInt32.TryParse(Console.ReadLine(), out UInt32 Id))
+    {
+        int index = donkeyKongs.FindIndex(c => c.Id == Id);  
+        if (index >= 0)
+        {
+            // Edit character
+            DonkeyKong dk = donkeyKongs[index];
+            InputCharacter(dk);  
+            donkeyKongs[index] = dk;  
+            File.WriteAllText("DK.json", JsonSerializer.Serialize(donkeyKongs));
+            logger.Info($"Character Id {Id} edited: {dk.Name}");
+        }
+        else
+        {
+            logger.Error($"Character Id {Id} not found.");
+        }
+    }
+    else
+    {
+        logger.Error("Invalid Id.");
+    }
+}
+else if (choice == "12")  // Edit Street Fighter Character
+{
+    Console.WriteLine("Enter the Id of the Street Fighter character to edit:");
+    if (UInt32.TryParse(Console.ReadLine(), out UInt32 Id))
+    {
+        int index = streetFighters.FindIndex(c => c.Id == Id); 
+        if (index >= 0)
+        {
+            // Edit character
+            StreetFighter sf = streetFighters[index];
+            InputCharacter(sf);  
+            streetFighters[index] = sf;  
+            File.WriteAllText("sf2.json", JsonSerializer.Serialize(streetFighters));
+            logger.Info($"Character Id {Id} edited: {sf.Name}");
+        }
+        else
+        {
+            logger.Error($"Character Id {Id} not found.");
+        }
+    }
+    else
+    {
+        logger.Error("Invalid Id.");
+    }
+}
     else if (string.IsNullOrEmpty(choice))
     {
         break;
