@@ -19,16 +19,16 @@ if (File.Exists(marioFileName))
   marios = JsonSerializer.Deserialize<List<Mario>>(File.ReadAllText(marioFileName))!;
   logger.Info($"File deserialized {marioFileName}");
 }
-if (File.Exists("donkeyKongs.json"))
+if (File.Exists("DK.json"))
 {
-    donkeyKongs = JsonSerializer.Deserialize<List<DonkeyKong>>(File.ReadAllText("donkeyKongs.json"))!;
+    donkeyKongs = JsonSerializer.Deserialize<List<DonkeyKong>>(File.ReadAllText("DK.json"))!;
     logger.Info("Donkey Kong characters deserialized.");
 }
 
 // Deserialize Street Fighter characters
-if (File.Exists("streetFighters.json"))
+if (File.Exists("sf2.json"))
 {
-    streetFighters = JsonSerializer.Deserialize<List<StreetFighter>>(File.ReadAllText("streetFighters.json"))!;
+    streetFighters = JsonSerializer.Deserialize<List<StreetFighter>>(File.ReadAllText("sf2.json"))!;
     logger.Info("Street Fighter characters deserialized.");
 }
 do
@@ -90,15 +90,96 @@ do
     } else {
       logger.Error("Invalid Id");
     }
-
-    
-  } else if (string.IsNullOrEmpty(choice)) {
-    break;
-  } else {
-    logger.Info("Invalid choice");
-  }
+ }
+    else if (choice == "4")
+    {
+        // Display Donkey Kong Characters
+        foreach (var c in donkeyKongs)
+        {
+            Console.WriteLine(c.Display());
+        }
+    }
+    else if (choice == "5")
+    {
+        // Add Donkey Kong Character
+        DonkeyKong dk = new() { Id = donkeyKongs.Count == 0 ? 1 : donkeyKongs.Max(c => c.Id) + 1 };
+        InputCharacter(dk);
+        donkeyKongs.Add(dk);
+        File.WriteAllText("donkeyKongs.json", JsonSerializer.Serialize(donkeyKongs));
+        logger.Info($"Character added: {dk.Name}");
+    }
+    else if (choice == "6")
+    {
+        // Remove Donkey Kong Character
+        Console.WriteLine("Enter the Id of the character to remove:");
+        if (UInt32.TryParse(Console.ReadLine(), out UInt32 Id))
+        {
+            DonkeyKong? character = donkeyKongs.FirstOrDefault(c => c.Id == Id);
+            if (character == null)
+            {
+                logger.Error($"Character Id {Id} not found");
+            }
+            else
+            {
+                donkeyKongs.Remove(character);
+                File.WriteAllText("DK.json", JsonSerializer.Serialize(donkeyKongs));
+                logger.Info($"Character Id {Id} removed");
+            }
+        }
+        else
+        {
+            logger.Error("Invalid Id");
+        }
+    }
+    else if (choice == "7")
+    {
+        // Display Street Fighter Characters
+        foreach (var c in streetFighters)
+        {
+            Console.WriteLine(c.Display());
+        }
+    }
+    else if (choice == "8")
+    {
+        // Add Street Fighter Character
+        StreetFighter sf = new() { Id = streetFighters.Count == 0 ? 1 : streetFighters.Max(c => c.Id) + 1 };
+        InputCharacter(sf);
+        streetFighters.Add(sf);
+        File.WriteAllText("sf2.json", JsonSerializer.Serialize(streetFighters));
+        logger.Info($"Character added: {sf.Name}");
+    }
+    else if (choice == "9")
+    {
+        // Remove Street Fighter Character
+        Console.WriteLine("Enter the Id of the character to remove:");
+        if (UInt32.TryParse(Console.ReadLine(), out UInt32 Id))
+        {
+            StreetFighter? character = streetFighters.FirstOrDefault(c => c.Id == Id);
+            if (character == null)
+            {
+                logger.Error($"Character Id {Id} not found");
+            }
+            else
+            {
+                streetFighters.Remove(character);
+                File.WriteAllText("sf2.json", JsonSerializer.Serialize(streetFighters));
+                logger.Info($"Character Id {Id} removed");
+            }
+        }
+        else
+        {
+            logger.Error("Invalid Id");
+        }
+    }
+    else if (string.IsNullOrEmpty(choice))
+    {
+        break;
+    }
+    else
+    {
+        logger.Info("Invalid choice");
+    }
 } while (true);
-
 
 logger.Info("Program ended");
 
