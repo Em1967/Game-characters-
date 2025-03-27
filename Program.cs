@@ -11,11 +11,25 @@ logger.Info("Program started");
 // deserialize mario json from file into List<Mario>
 string marioFileName = "mario.json";
 List<Mario> marios = [];
+List<DonkeyKong> donkeyKongs = new List<DonkeyKong>();
+List<StreetFighter> streetFighters = new List<StreetFighter>();
 // check if file exists
 if (File.Exists(marioFileName))
 {
   marios = JsonSerializer.Deserialize<List<Mario>>(File.ReadAllText(marioFileName))!;
   logger.Info($"File deserialized {marioFileName}");
+}
+if (File.Exists("donkeyKongs.json"))
+{
+    donkeyKongs = JsonSerializer.Deserialize<List<DonkeyKong>>(File.ReadAllText("donkeyKongs.json"))!;
+    logger.Info("Donkey Kong characters deserialized.");
+}
+
+// Deserialize Street Fighter characters
+if (File.Exists("streetFighters.json"))
+{
+    streetFighters = JsonSerializer.Deserialize<List<StreetFighter>>(File.ReadAllText("streetFighters.json"))!;
+    logger.Info("Street Fighter characters deserialized.");
 }
 do
 {
@@ -76,6 +90,8 @@ do
     } else {
       logger.Error("Invalid Id");
     }
+
+    
   } else if (string.IsNullOrEmpty(choice)) {
     break;
   } else {
